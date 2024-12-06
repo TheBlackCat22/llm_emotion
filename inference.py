@@ -1,5 +1,4 @@
 from tqdm import tqdm
-import torch
 from src.utils import(
     load_tokenizer,
     load_policy_model,
@@ -7,35 +6,23 @@ from src.utils import(
 
 
 PolicyConfig = {
-    'model_path': 'models/llama3.1-policy',
-    'state_dict_path' : None,
-    'quantization' : {
-        'load_in_4bit':True,
-        'bnb_4bit_quant_type':"nf4"
-    },
-    'lora': {
-        'r':64,
-        'lora_alpha':16,
-        'lora_dropout':0.1,
-        'bias':"none",
-        'task_type':"CAUSAL_LM",
-        'target_modules':"all-linear"
-    } 
+    'model_path': 'models/gpt2-policy',
+    'state_dict_path' : 'outputs/dpo-anger_gpt2/model.pt'
 }
 GenerationConfig = {
     'do_sample': True,
-    'max_new_tokens': 64,
+    'max_new_tokens': 24,
     'min_new_tokens': 1,
     'top_k': 0.0,
     'top_p': 1
 }
 
-prompts = ["i was feeling really", "i feel so thrilled", "i feel is that", "i tune out the", "i sit here writing"]
+prompts = ["i was feeling really"]
 
 
 def sample_completions(dataset, tokenizer, model, generation_config, batch_size=64):
 
-    # model.to('cuda')
+    model.to('cuda')
     model.eval()
 
     generations = []
@@ -55,8 +42,6 @@ def sample_completions(dataset, tokenizer, model, generation_config, batch_size=
 policy_tokenizer = load_tokenizer(PolicyConfig['model_path'])
 policy_model = load_policy_model(**PolicyConfig)
 
-policy_model.print_trainable_parameters()
-print(type(policy_model))
-policy_model = policy_model.merge_and_unload()
-# generations = sample_completions(prompts, policy_tokenizer, policy_model, GenerationConfig)
-# print(generations)
+generations = sample_completions(prompts, policy_tokenizer, policy_model, GenerationConfig)
+
+print('\nPrompt:\n', prompts[0].strip(), '\n\n', 'Generation:\n', generations[0].strip(), '\n')
