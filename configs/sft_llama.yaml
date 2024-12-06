@@ -28,4 +28,4 @@ TrainerConfig:
   warmup_steps: 12
   max_grad_norm: 10.0
   max_seq_length: 68
-  gradient_accumulation_steps: 2
+  gradient_accumulation_steps: 1

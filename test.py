@@ -61,7 +61,7 @@ def main(config):
 
     reward_tokenizer = load_tokenizer(config['RewardConfig']['model_path'])
     reward_model = load_reward_model(**config['RewardConfig'])
-    print_item(f"Loaded {config['RewardConfig']['model_path'].split('/')[-1]} Reward Model with weights from {config['ModelConfig'].get('state_dict_path')}")
+    print_item(f"Loaded {config['RewardConfig']['model_path'].split('/')[-1]} Reward Model with weights from {config['RewardConfig'].get('state_dict_path')}")
 
     dataset = load_dataset('json', data_dir=config['DatasetConfig']['dataset_path'])
 
