@@ -1,0 +1,31 @@
+Task: sft
+OutputDir: outputs/sft_llama
+Seed: 42
+
+ModelConfig:
+  model_path: models/llama3.1-policy
+  quantization:
+    load_in_4bit: True
+    bnb_4bit_quant_type: nf4
+  lora:
+    r: 64
+    lora_alpha: 16
+    lora_dropout: 0.1
+    bias: none
+    task_type: CAUSAL_LM
+    target_modules: all-linear
+
+DatasetConfig: 
+  dataset_path: datasets/emotion-sft
+
+TrainerConfig:
+  eval_steps: 60
+  save_steps: 120
+  per_device_train_batch_size : 64
+  per_device_eval_batch_size : 128
+  num_train_epochs: 10
+  learning_rate: 5.0e-7
+  warmup_steps: 12
+  max_grad_norm: 10.0
+  max_seq_length: 68
+  gradient_accumulation_steps: 2

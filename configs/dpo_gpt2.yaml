@@ -1,0 +1,24 @@
+Task: dpo
+OutputDir: outputs/dpo
+Seed: 42
+
+ModelConfig:
+  model_path: models/gpt2-policy
+  state_dict_path: outputs/sft/model.pt
+
+DatasetConfig: 
+  dataset_path: datasets/emotion-preference
+
+TrainerConfig:
+  eval_steps: 30
+  save_steps: 60
+  per_device_train_batch_size : 64
+  per_device_eval_batch_size : 128
+  num_train_epochs: 30
+  learning_rate: 5.0e-7
+  warmup_steps: 12
+  max_grad_norm: 10.0
+  max_length: 68
+  max_prompt_length: 4
+  beta: 0.1
+  truncation_mode: keep_start
